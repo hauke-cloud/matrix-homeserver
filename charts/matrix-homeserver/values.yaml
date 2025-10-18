@@ -1,0 +1,174 @@
+# Default values for the matrix homeserver.
+
+matrix-stack:
+  ## CertManager Issuer to configure by default automatically on all ingresses
+  ## If configured, the chart will automatically generate the tlsSecret name for all ingresses
+  ## Choose one of clusterIssuer or issuer
+  # clusterIssuer:
+  # issuer:
+  certManager: {}
+
+  ## How all ingresses should be constructed by default, unless overridden
+  ingress:
+    ## Annotations to be added to all Ingresses. Will be merged with component specific Ingress annotations
+    annotations: {}
+
+    ## What Ingress Class Name that should be used for all Ingresses by default
+    # className:
+
+    ## Disable TLS configuration by setting it to false
+    tlsEnabled: true
+
+    ## The name of the Secret containing the TLS certificate and the key that should be used for all Ingresses by default
+    # tlsSecret:
+
+    ## How the Services behind all Ingresses is constructed by default
+    service:
+      type: ClusterIP
+    ## If set, some tweaks will be applied automatically to ingresses based on the controller type here.
+    ## This can be set to `ingress-nginx`.
+    # controllerType:
+
+  # Components
+  initSecrets:
+    enabled: false
+
+  # MatrixRTC
+  matrixRTC:
+    enabled: true
+
+    replicas: 3
+
+    ## How this ingress should be constructed
+    ingress:
+      ## What hostname should be used for this Ingress
+      # host:
+
+      ## Annotations to be added to this Ingress
+      annotations: {}
+
+      ## What Ingress Class Name that should be used for this Ingress
+      # className:
+
+      ## Disable TLS configuration by setting it to false
+      tlsEnabled: true
+
+      ## The name of the Secret containing the TLS certificate and the key that should be used for this Ingress
+      # tlsSecret:
+
+      ## How the Service behind this Ingress is constructed
+      service: {}
+      ## If set, some tweaks will be applied automatically to ingresses based on the controller type here.
+      ## This can be set to `ingress-nginx`.
+      # controllerType:
+
+    ## Kubernetes resources to allocate to each instance.
+    resources:
+      ## Requests describes the minimum amount of compute resources required. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
+      requests:
+        memory: 200Mi
+        cpu: 100m
+
+      ## Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
+      limits:
+        memory: 200Mi
+
+  elementAdmin:
+    enabled: false
+
+postgres-database:
+  # name is the name of the cluster. This defaults to the name of the Helm
+  # release.
+  # nameOverwrite: hippo
+
+  # postgresVersion sets the version to deploy. This version number needs to be
+  # available as one of the "RELATED_IMAGE_POSTGRES_..." images as part of the PGO
+  # installation if you want to deploy the image without setting the "postgres"
+  # image variable. This value is required.
+  # postgresVersion: 17
+
+  # pgBouncerReplicas sets the number of pgBouncer instances to deploy. The
+  # default is 0. You need to set this to at least 1 to deploy pgBouncer or set
+  # "pgBouncerConfig". Setting "pgBouncerConfig" will override the value of
+  # pgBouncerReplicas. The "RELATED_IMAGE_PGBOUNCER" in the PGO deployment must be
+  # set if you want to enable this without explicitly setting "pgBouncer".
+  # pgBouncerReplicas: 1
+
+  # monitoring enables the ability to monitor the Postgres cluster through a
+  # metrics exporter that can be scraped by Prometheus. This defaults to the value
+  # below.
+  monitoring: true
+
+  # imagePostgres can be a Postgres or GIS-enabled Postgres image. This defaults to the
+  # below value. "postgresVersion" needs to match the version of Postgres that is
+  # used here. If using the GIS-enabled Postgres image, you need to ensure
+  # "postGISVersion" matches the version of PostGIS used.
+  # imagePostgres: registry.developers.crunchydata.com/crunchydata/crunchy-postgres:ubi8-17.4-0
+
+  # imagePgBackRest is the pgBackRest backup utility image. This defaults to the
+  # below value.
+  # imagePgBackRest: registry.developers.crunchydata.com/crunchydata/crunchy-pgbackrest:ubi8-2.54.1-1
+
+  # imagePgBouncer is the image for the PgBouncer connection pooler. This defaults
+  # to the below value.
+  # imagePgBouncer: registry.developers.crunchydata.com/crunchydata/crunchy-pgbouncer:ubi8-1.23-4
+
+  # imageExporter is the image name for the exporter used as a part of monitoring.
+  # This defaults to the value below.
+  imageExporter: registry.developers.crunchydata.com/crunchydata/crunchy-postgres-exporter:ubi8-0.16.0-1
+
+  # instanceSize sets the size of the volume that contains the data. This defaults
+  # to the value below. Settings "instances" overrides this value.
+  # instanceSize: 1Gi
+
+  # instanceStorageClassName sets the storage class for the volume that contains the data.
+  # This defaults to the "default" storage class defined in the cluster.
+  # See: 'kubectl get storageclasses.storage.k8s.io | grep default'
+  # Settings "instances" overrides this value.
+  # instanceStorageClassName: "hostpath"
+
+  # instanceMemory sets the memory limit for the Postgres instances. This defaults
+  # to no limit being set, but an example value is set below. Settings "instances"
+  # overrides this value.
+  instanceMemory: 0.5Gi
+
+  # instanceCPU sets the CPU limit for the Postgres instances. This defaults to
+  # no limit being set, but an example value is set below. Setting "instances"
+  # overrides this value.
+  instanceCPU: 1m
+
+  # instanceReplicas lets you set the total number of Postgres replicas. This
+  # defaults to the value below. More than on replica enables high availability
+  # (HA). Settings "instances" overrides this value.
+  instanceReplicas: 3
+
+  # users sets any custom Postgres users and databases that they have  access to
+  # as well as any permissions associated with the user account.
+  # users: {}
+
+  # s3 allows for AWS S3 or an S3 compatible storage system to be used for
+  # backups. This allows for a quick setup with S3; if you need more advanced
+  # setup, use pgBackRestConfig.
+  # s3:
+  #   # bucket specifies the S3 bucket to use,
+  #   bucket: ""
+  #   # endpoint specifies the S3 endpoint to use.
+  #   endpoint: ""
+  #   # region specifies the S3 region to use. If your S3 storage system does not
+  #   # use "region", fill this in with a random value.
+  #   region: ""
+  #   # key is the S3 key. This is stored in a Secret.
+  #   key: ""
+  #   # keySecret is the S3 key secret. This is stored in a Secret.
+  #   keySecret: ""
+  #   # keyType can be configured to enable IAM integration via AssumeRole
+  #   # For more info, see the documentation at https://access.crunchydata.com/documentation/postgres-operator/latest/tutorials/backups-disaster-recovery/backups#using-an-aws-integrated-identity-provider-and-role
+  #   keyType: ""
+  #   # encryptionPassphrase is an optional parameter to enable encrypted backups
+  #   # with pgBackRest. This is encrypted by pgBackRest and does not use S3's
+  #   # built-in encryption system.
+  #   encryptionPassphrase: ""
+
+  # pgBackRestConfig allows for the configuration of every pgBackRest option
+  # except for "image", which is set by "pgBackRest".
+  # pgBackRestConfig: {}
