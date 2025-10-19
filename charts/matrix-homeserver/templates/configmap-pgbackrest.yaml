@@ -1,0 +1,21 @@
+{{- if .Values.database.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "matrix-homeserver.fullname" . }}-pgbackrest-async
+  labels:
+    {{- include "matrix-homeserver.labels" . | nindent 4 }}
+data:
+  {{ with .Values.database.asyncWalHandling }}
+  async.conf: |
+    [global]
+    archive-async = y
+    spool-path=/pgdata/pgbackrest/spool
+
+    [global:archive-get]
+    process-max = {{ .workersGet }}
+
+    [global:archive-push]
+    process-max = {{ .workersPush }}
+  {{ end }}
+{{- end }}
