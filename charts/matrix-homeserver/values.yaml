@@ -1,6 +1,6 @@
 # Default values for the matrix homeserver.
 
-matrix:
+matrix-stack:
   ## CertManager Issuer to configure by default automatically on all ingresses
   ## If configured, the chart will automatically generate the tlsSecret name for all ingresses
   ## Choose one of clusterIssuer or issuer
@@ -83,7 +83,7 @@ matrix:
   elementWeb:
     enabled: false
 
-database:
+postgres-database:
   enabled: true
 
   # name is the name of the cluster. This defaults to the name of the Helm
