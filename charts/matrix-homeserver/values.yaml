@@ -1,6 +1,6 @@
 # Default values for the matrix homeserver.
 
-matrix-stack:
+matrix:
   ## CertManager Issuer to configure by default automatically on all ingresses
   ## If configured, the chart will automatically generate the tlsSecret name for all ingresses
   ## Choose one of clusterIssuer or issuer
@@ -31,6 +31,10 @@ matrix-stack:
 
   # Components
   initSecrets:
+    enabled: false
+
+  # Matrix authentication service
+  matrixAuthenticationService:
     enabled: false
 
   # MatrixRTC
@@ -76,7 +80,12 @@ matrix-stack:
   elementAdmin:
     enabled: false
 
-postgres-database:
+  elementWeb:
+    enabled: false
+
+database:
+  enabled: true
+
   # name is the name of the cluster. This defaults to the name of the Helm
   # release.
   # nameOverwrite: hippo
@@ -135,7 +144,7 @@ postgres-database:
   # instanceCPU sets the CPU limit for the Postgres instances. This defaults to
   # no limit being set, but an example value is set below. Setting "instances"
   # overrides this value.
-  instanceCPU: 1m
+  # instanceCPU: 100m
 
   # instanceReplicas lets you set the total number of Postgres replicas. This
   # defaults to the value below. More than on replica enables high availability
@@ -172,3 +181,9 @@ postgres-database:
   # pgBackRestConfig allows for the configuration of every pgBackRest option
   # except for "image", which is set by "pgBackRest".
   # pgBackRestConfig: {}
+
+  # We are using asynchron wal push/get
+  # Configure it here
+  asyncWalHandling:
+    workersGet: 2
+    workersPush: 2
