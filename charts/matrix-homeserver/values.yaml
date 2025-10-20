@@ -136,15 +136,15 @@ postgres-database:
   # Settings "instances" overrides this value.
   # instanceStorageClassName: "hostpath"
 
-  # instanceMemory sets the memory limit for the Postgres instances. This defaults
-  # to no limit being set, but an example value is set below. Settings "instances"
+  # resources sets the memory and cpu requests/limits for the Postgres instances. This defaults
+  # to no limits being set for cpu, but an example value is set below. Settings "instances"
   # overrides this value.
-  instanceMemory: 0.5Gi
-
-  # instanceCPU sets the CPU limit for the Postgres instances. This defaults to
-  # no limit being set, but an example value is set below. Setting "instances"
-  # overrides this value.
-  # instanceCPU: 100m
+  resources:
+    requests:
+      memory: 1Gi
+      cpu: 0.5
+    limits:
+      memory: 1Gi
 
   # instanceReplicas lets you set the total number of Postgres replicas. This
   # defaults to the value below. More than on replica enables high availability

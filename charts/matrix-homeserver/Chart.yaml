@@ -8,6 +8,7 @@ dependencies:
   - name: postgres-database
     version: "0.0.1"
     repository: "oci://ghcr.io/hauke-cloud/charts"
+    condition: postgres-database.enabled
   - name: matrix-stack
     version: "25.10.1"
     repository: "oci://ghcr.io/element-hq/ess-helm"
