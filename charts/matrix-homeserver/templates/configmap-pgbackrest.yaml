@@ -10,7 +10,6 @@ data:
   {{ with (index .Values "postgres-database" "asyncWalHandling") }}
   async.conf: |
     [global]
-    archive-async = y
     spool-path=/pgdata/pgbackrest/spool
 
     [global:archive-get]
