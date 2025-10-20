@@ -9,9 +9,6 @@ metadata:
 data:
   {{ with (index .Values "postgres-database" "asyncWalHandling") }}
   async.conf: |
-    [global]
-    spool-path=/pgdata/pgbackrest/spool
-
     [global:archive-get]
     process-max = {{ .workersGet }}
 
