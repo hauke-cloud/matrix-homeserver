@@ -13,5 +13,5 @@ dependencies:
     version: "25.10.1"
     repository: "oci://ghcr.io/element-hq/ess-helm"
   - name: matrix-hookshot
-    version: "0.2.1"
+    version: "1.0.2"
     repository: "oci://ghcr.io/hauke-cloud/charts"
